@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Grid } from '@material-ui/core'
-import Signin from './Signin';
+import Signup from './Signup';
 
 
 
@@ -15,7 +15,7 @@ class App extends Component {
         alignItems="center"
         justify="center"
         style={{ minHeight: '100vh', backgroundColor: '#EDF6FF' }}>
-        <Signin />
+        <Signup />
       </Grid>
       
     );

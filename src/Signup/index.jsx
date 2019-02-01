@@ -4,6 +4,8 @@ import { Formik } from "formik";
 import SignupForm from './SignupForm';
 import Signin from '../Signin';
 import { BrowserRouter, Route } from 'react-router-dom'
+import PostData from '../services/PostData'
+
 
 
 
@@ -12,6 +14,8 @@ const validationSchema = Yup.object({
         .required("Firstname is required"),
     lastname: Yup.string()
         .required("Lastname is required"),
+    username: Yup.string()
+        .required("Username is required"),
     email: Yup.string()
         .required("Email is required")
         .email("Enter a valid email"),
@@ -23,7 +27,7 @@ const validationSchema = Yup.object({
         .oneOf([Yup.ref("password")], "Confirm password does not match with password")
 });
 
-const initialValues = { firstname: '',lastname: '', email: "", password: '', confirmPassword: '' };
+const initialValues = { firstname: '',lastname: '' , username: "" , email: "", password: '', confirmPassword: '' };
 
 export default class extends React.Component {
 
@@ -32,20 +36,39 @@ export default class extends React.Component {
         this.state = {
           firstname: '',
           lastname: '',
+          username: '',
           email: '',
           password: '',
           redirect: false
         };
+
+        this.Post = new PostData();
+
       }
 
     handleSubmit = (values) => {
         this.setState({
             firstname: values.firstname,
             lastname: values.lastname,
+            username: values.username, 
             email: values.email, 
-            password: values.password, 
+            password: values.password,
             redirect: true
         });
+
+        this.Post.signUp(this.state.email,this.state.password,this.state.username,this.state.firstname,this.state.lastname)
+            .then(res => {
+                if(res.id){
+                    this.setState({redirect: true});
+                }
+                else{
+                    alert(res.error)
+                }
+  
+            })
+            .catch(err => {
+                //alert("this is catch block error");
+            })
 
         console.log(this.state);
     } 
